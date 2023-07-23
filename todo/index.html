@@ -12,7 +12,7 @@
 </head>
 
 <body>
-  <h1>To-Do List Application</h1>
+  <h1>Task Management Application</h1>
   <div class="container">
     <h2>Add Task:</h2>
     <div class="task-form">
@@ -47,7 +47,7 @@
             <button onclick="applyFilters()">Apply Filters</button>
             <button onclick="resetFilters()"><span>Reset Filters</span></button>
           </div>
-          <button onclick=""><i class="fa-solid fa-truck"></i> Show Expired</button>
+          <button onclick="showExpired()"><i class="fa-solid fa-truck"></i> Show Expired</button>
         </div>
       </div>
       <span id='drop-down'>Set Filters <i class="fa-solid fa-caret-down"></i></span>
@@ -97,6 +97,13 @@
     <div class="search-results">
       <h2>Search Results:</h2>
       <ul id="searchResults" ondrop="drop(event)" ondragover="allowDrop(event)"></ul>
+    </div>
+    <div class="expired">
+      <h2>Expired:</h2>
+      <ul id="expired" ondrop="drop(event)" ondragover="allowDrop(event)"></ul>
+    </div>
+    <div id="activityTimeline">
+      <h2>Activity Timeline</h2>
     </div>
   </div>
 

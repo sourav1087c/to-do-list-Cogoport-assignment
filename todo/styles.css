@@ -417,7 +417,9 @@ li .tags {
 }
 
 li .tags span {
-	padding: 0.2rem 0.5rem;
+	display: flex;
+	align-items: center;
+	padding: 0.2rem 0.5rem 0.15rem 0.5rem;
 	border-radius: 0.1rem;
 	background-color: rgb(110, 110, 225);
 	font-size: 0.7rem;
@@ -427,8 +429,8 @@ li .tags span {
 }
 
 li .tags span i {
-	font-size: 0.5rem;
-	padding: 0.1rem 0.2rem;
+	font-size: 0.55rem;
+	padding: 0.1rem 0rem 0.1rem 0.2rem;
 	cursor: pointer;
 }
 
@@ -615,6 +617,20 @@ li .reminder {
 	align-items: center;
 	justify-content: flex-end;
 	margin-top: 2rem;
+}
+
+.activity span:first-child {
+	font-weight: bold;
+	padding: 0.5rem;
+}
+
+.activity span:nth-child(2) {
+	padding: 0.2rem 0.5rem;
+}
+
+.activity span:nth-child(3) {
+	padding: 0.2rem 1rem;
+	color: #656565;
 }
 
 @media screen and (max-width: 500px) {

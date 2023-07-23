@@ -7,6 +7,7 @@ const categoryInput = document.getElementById('categoryInput')
 const reminderInput = document.getElementById('reminder')
 const searchInput = document.getElementById('searchInput')
 const searchResults = document.getElementById('searchResults')
+const expired = document.getElementById('expired')
 const dueDateFromInput = document.getElementById('dueDateFrom')
 const dueDateToInput = document.getElementById('dueDateTo')
 const categoryFilterInput = document.getElementById('categoryFilter')
@@ -17,6 +18,22 @@ let tasks = JSON.parse(localStorage.getItem('tasks')) || []
 
 function saveTasks() {
 	localStorage.setItem('tasks', JSON.stringify(tasks))
+}
+
+// Add an array to store activity logs
+let activityLogs = []
+
+// Function to add an activity log
+function addActivityLog(action, task, subtask) {
+	const activity = {
+		action: action,
+		task: task,
+		subtask: subtask,
+		timestamp: new Date().toLocaleString(), // Add timestamp to the activity log
+	}
+
+	activityLogs.push(activity)
+	renderActivityTimeline()
 }
 
 function addTask() {
@@ -53,55 +70,35 @@ function addTask() {
 	categoryInput.value = '' // Reset category input after adding a task
 	reminderInput.checked = false // Reset reminder checkbox after adding a task
 
+	addActivityLog('Task Added', newTask.text)
 	dateAutocomplete()
 }
 
-// function dateAutocomplete() {
-// 	// Get the due date text from the user
-// 	const dueDateText = dueDateInput.value
-// 	//console.log(dueDateText)
-// 	// If the due date text is in the format "complete x by tomorrow"
-// 	if (dueDateText.includes('by tomorrow')) {
-// 		// Get the current date and add 1 day
-// 		const dueDate = new Date()
-// 		dueDate.setDate(dueDate.getDate() + 1)
+function dateAutocomplete() {
+	// Get the due date text from the user
+	const dueDateText = dueDateInput.value
+	//console.log(dueDateText)
+	// If the due date text is in the format "complete x by tomorrow"
+	if (dueDateText.includes('by tomorrow')) {
+		// Get the current date and add 1 day
+		const dueDate = new Date()
+		dueDate.setDate(dueDate.getDate() + 1)
 
-// 		// Set the due date text to the current date
-// 		dueDateInput.value = dueDate
-// 		dueDateInput.dispatchEvent(new Event('change'))
-// 	} else if (dueDateText.includes('by')) {
-// 		// Split the due date text into two parts: the task text and the due date
-// 		const [taskText, dueDate] = dueDateText.split('by')
+		// Set the due date text to the current date
+		dueDateInput.value = dueDate
+		dueDateInput.dispatchEvent(new Event('change'))
+	} else if (dueDateText.includes('by')) {
+		// Split the due date text into two parts: the task text and the due date
+		const [taskText, dueDate] = dueDateText.split('by')
 
-// 		// Parse the due date string into a Date object
-// 		const parsedDueDate = new Date(dueDate)
+		// Parse the due date string into a Date object
+		const parsedDueDate = new Date(dueDate)
 
-// 		// Set the due date text to the parsed due date
-// 		dueDateInput.value = parsedDueDate
-// 		dueDateInput.dispatchEvent(new Event('change'))
-// 	}
-// }
-
-// function dateAutocomplete() {
-// 	const dueDateText = dueDateInput.value.trim().toLowerCase();
-// 	const currentDate = new Date();
-  
-// 	if (dueDateText.includes('by tomorrow')) {
-// 	  currentDate.setDate(currentDate.getDate() + 1);
-// 	} else if (dueDateText.includes('by')) {
-// 	  const [taskText, dueDateStr] = dueDateText.split('by');
-// 	  const parsedDueDate = new Date(dueDateStr.trim());
-// 	  if (!isNaN(parsedDueDate.getTime())) {
-// 		currentDate.setDate(parsedDueDate.getDate());
-// 		currentDate.setMonth(parsedDueDate.getMonth());
-// 		currentDate.setFullYear(parsedDueDate.getFullYear());
-// 	  }
-// 	}
-  
-// 	const formattedDueDate = currentDate.toISOString().slice(0, 10);
-// 	dueDateInput.value = formattedDueDate;
-//   }
-  
+		// Set the due date text to the parsed due date
+		dueDateInput.value = parsedDueDate
+		dueDateInput.dispatchEvent(new Event('change'))
+	}
+}
 
 function allowDrop(event) {
 	event.preventDefault()
@@ -120,6 +117,51 @@ function drop(event) {
 	}
 }
 
+function showExpired() {
+	let currentDate = new Date()
+	let dd = String(currentDate.getDate()).padStart(2, '0')
+	let mm = String(currentDate.getMonth() + 1).padStart(2, '0')
+	let yyyy = currentDate.getFullYear()
+	let hours = currentDate.getHours()
+	let minutes = currentDate.getMinutes()
+
+	currentDate = yyyy + '-' + mm + '-' + dd
+
+	const tasksToRender = tasks.filter(e => {
+		console.log(currentDate, e.dueDate)
+		console.log(hours, minutes)
+		console.log(e.dueTime, e.dueTime.slice(0, 2), e.dueTime.slice(3, 5))
+		if (yyyy >= e.dueDate.slice(0, 4)) {
+			console.log('y')
+			if (mm >= e.dueDate.slice(5, 7)) {
+				console.log('m')
+				if (dd >= e.dueDate.slice(8, 10)) {
+					console.log('d')
+					if (hours >= e.dueTime.slice(0, 2)) {
+						if (minutes >= e.dueTime.slice(3, 5)) {
+							return true
+						}
+					}
+				}
+			}
+		}
+
+		return false
+	})
+	renderExpired(tasksToRender)
+}
+
+function renderExpired(tasksToRender) {
+	// Clear the search results list
+	expired.innerHTML = ''
+
+	// Render the search results
+	tasksToRender.forEach(task => {
+		const li = createTaskElement(task)
+		expired.appendChild(li)
+	})
+}
+
 function addSubtask(taskId) {
 	const subtaskInput = prompt('Enter a subtask:')
 	if (subtaskInput === null || subtaskInput.trim() === '') return
@@ -136,10 +178,17 @@ function addSubtask(taskId) {
 	task.subtasks.push(newSubtask)
 	saveTasks()
 	renderTasks()
+
+	addActivityLog('Subtask Added', task.text, newSubtask.text)
 }
 
 function deleteTask(taskId) {
-	tasks = tasks.filter(task => task.id !== taskId)
+	tasks = tasks.filter(task => {
+		if (task.id == taskId) {
+			addActivityLog('Task Deleted', task.text, 0)
+		}
+		return task.id !== taskId
+	})
 	saveTasks()
 	renderTasks()
 }
@@ -147,6 +196,8 @@ function deleteTask(taskId) {
 function toggleComplete(taskId) {
 	tasks = tasks.map(task => {
 		if (task.id === taskId) {
+			const action = task.completed ? 'Task Unchecked' : 'Task Checked'
+			addActivityLog(action, task.text)
 			return { ...task, completed: !task.completed }
 		}
 		return task
@@ -305,8 +356,7 @@ function createTaskElement(task) {
 
 	return li
 }
-	// dueDateInput.addEventListener('input', dateAutocomplete);
-  	// dueDateInput.addEventListener('blur', dateAutocomplete);
+
 function sortTasks(type, order) {
 	console.log(type, order)
 	console.log(tasks)
@@ -382,6 +432,10 @@ function toggleSubtaskComplete(taskId, subtaskId) {
 		if (task.id === taskId) {
 			task.subtasks.forEach(subtask => {
 				if (subtask.id === subtaskId) {
+					const action = subtask.completed
+						? 'Subtask Unchecked'
+						: 'Subtask Checked'
+					addActivityLog(action, task.text, subtask.text)
 					subtask.completed = !subtask.completed
 				}
 			})
@@ -402,6 +456,7 @@ function editTask(taskId) {
 	if (title !== null && priority !== null && category !== null) {
 		tasks = tasks.map(task => {
 			if (task.id === taskId) {
+				addActivityLog('Task Edited', task.text, 0)
 				return {
 					...task,
 					text: title,
@@ -417,19 +472,16 @@ function editTask(taskId) {
 }
 
 function editSubtask(taskId, subtaskId, index) {
-	console.log(subtaskId)
 	const subLi = [...document.querySelectorAll('.subtask')]
 	const li = subLi.find(e => e.id === subtaskId)
 	const title = li.querySelector('.title').innerText
 
 	const taskN = tasks.find(task => task.id === taskId)
-	console.log(taskN.subtasks)
 
 	if (title !== null) {
 		taskN.subtasks = taskN.subtasks.map((task, tIndex) => {
-			console.log(tIndex, index)
 			if (tIndex == index) {
-				console.log('dfs')
+				addActivityLog('Subtask Edited', taskN.text, task.text)
 				return {
 					text: title,
 				}
@@ -445,17 +497,18 @@ function deleteSubtask(taskId, index) {
 	const task = tasks.find(task => task.id === taskId)
 	console.log(task)
 	if (!task) return
-
+	let subtaskId = 0
 	task.subtasks = task.subtasks.filter((e, eIndex) => {
-		console.log('I', eIndex, index)
+		if (eIndex == index) {
+			console.log(eIndex, index)
+			subtaskId = index
+		}
 		return eIndex != index
 	})
 
-	console.log(task.subtasks)
-
-	//task.subtasks = task.subtasks.filter(subtask => subtask.id !== subtaskId)
 	saveTasks()
 	renderTasks()
+	addActivityLog('Subtask Deleted', task.text, task.subtasks[subtaskId].text)
 }
 
 function renderSearchResults(tasksToRender) {
@@ -468,40 +521,13 @@ function renderSearchResults(tasksToRender) {
 		searchResults.appendChild(li)
 	})
 }
-function searchBySubtasks(searchTerm) {
-	const filteredTasks = tasks.filter(task => {
-	  const hasSubtask = task.subtasks.some(subtask =>
-		subtask.text.toLowerCase().includes(searchTerm)
-	  );
-	  return hasSubtask;
-	});
-	return filteredTasks;
-  }
-function searchByTags(searchTerm) {
-	const filteredTasks = tasks.filter(task => {
-	  const hasTag = task.tags.some(tag => tag.toLowerCase().includes(searchTerm));
-	  return hasTag;
-	});
-	return filteredTasks;
-  }
 
 function searchTasks() {
 	const searchTerm = searchInput.value.trim().toLowerCase()
-	const filteredTasksByText = tasks.filter(task =>
+	const filteredTasks = tasks.filter(task =>
 		task.text.toLowerCase().includes(searchTerm)
 	)
-	const filteredTasksByTags = searchByTags(searchTerm);
-	const filteredTasksBySubtasks = searchBySubtasks(searchTerm);
-
-  const combinedFilteredTasks = [
-    ...new Set([
-      ...filteredTasksByText,
-      ...filteredTasksByTags,
-      ...filteredTasksBySubtasks
-    ])
-  ];
-	
-	renderSearchResults(combinedFilteredTasks);
+	renderSearchResults(filteredTasks)
 }
 
 function applyFilters() {
@@ -536,6 +562,34 @@ function resetFilters() {
 
 // Initial rendering of tasks
 renderTasks()
+
+function renderActivityTimeline() {
+	// Get the activityTimeline div
+	const activityTimeline = document.getElementById('activityTimeline')
+
+	// Clear the existing activity timeline content
+	activityTimeline.innerHTML = '<h2>Activity Timeline</h2>'
+
+	// Render each activity log as a list item in the activity timeline
+	activityLogs.forEach(activity => {
+		const activityItem = document.createElement('li')
+		activityItem.className = 'activity'
+		activityItem.innerHTML += `<span>${activity.timestamp}: ${activity.action}</span>`
+
+		if (activity.task) {
+			activityItem.innerHTML += `<span> - Task: ${activity.task}</span>`
+		}
+
+		if (activity.subtask != 0) {
+			activityItem.innerHTML += `<span> - Subtask: ${activity.subtask}</span>`
+		}
+
+		activityTimeline.appendChild(activityItem)
+	})
+}
+
+// Call the renderActivityTimeline function to display the activity timeline on page load
+renderActivityTimeline()
 
 const applying = document.querySelector('.applying')
 const iconDown = document.querySelector('.fa-caret-down')
