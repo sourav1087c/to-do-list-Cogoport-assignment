@@ -1,0 +1,696 @@
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	min-height: 100vh;
+	font-family: 'Arial', sans-serif;
+	background-color: #f0f0f0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+h1 {
+	text-align: center;
+	padding: 2rem 0;
+	font-size: 1.4rem;
+	color: #444;
+}
+
+h2 {
+	color: #444;
+	font-size: 1.2rem;
+	padding: 0.6rem;
+	border-top: 0.1rem solid rgb(176, 176, 176);
+	border-bottom: 0.1rem solid rgb(176, 176, 176);
+}
+
+.container {
+	max-width: 600px;
+	padding: 1rem 2rem;
+	background-color: #fff;
+	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+	margin: 0 0 5rem 0;
+	border-radius: 0.5rem;
+}
+
+.task-form {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.task-form .add-input {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 98%;
+	height: 2.5rem;
+	background-color: #e5e5e5;
+	border-radius: 0.5rem;
+}
+
+.add-input input {
+	background: transparent;
+	width: 90%;
+	color: #000;
+	z-index: 10;
+	border: none;
+	padding: 1rem;
+}
+
+.add-input input:focus {
+	transition: 0.3s;
+	outline: none;
+}
+
+.add-input input::placeholder {
+	color: #000;
+}
+
+.add-input button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	width: 2.5rem;
+	height: 100%;
+	border-radius: 0.5rem;
+	background-color: #28a745;
+	color: #fff;
+	font-weight: bold;
+	font-size: 0.9rem;
+	transition: 0.3s;
+	cursor: pointer;
+}
+
+.add-input button:hover {
+	background-color: green;
+	transform: scale(1.05);
+}
+
+.date-input {
+	padding: 1rem;
+	width: 97.5%;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+.date-input input,
+.date-input select {
+	background-color: rgb(221, 224, 224);
+	border: none;
+	padding: 0.5rem;
+	font-size: 0.8rem;
+	cursor: pointer;
+	border: 0.1rem solid grey;
+	border-radius: 0.2rem;
+	transition: 0.3s;
+}
+
+.date-input input:focus,
+.date-input select:focus {
+	-webkit-box-shadow: 0px 0px 5px 1px rgba(148, 201, 227, 1);
+	-moz-box-shadow: 0px 0px 5px 1px rgba(148, 201, 227, 1);
+	box-shadow: 0px 0px 5px 1px rgba(148, 201, 227, 1);
+	outline: none;
+	border: 0.1rem solid rgba(148, 201, 227, 1);
+	background-color: #e7e7e7;
+}
+
+.date-input input[type='checkbox'] {
+	width: 1rem;
+	height: 1rem;
+}
+
+.date-input > div {
+	display: flex;
+	align-items: center;
+	gap: 0.2rem;
+}
+
+.date-input label {
+	font-size: 0.6rem;
+	font-weight: bold;
+}
+
+.filters {
+	margin: 0 0.4rem;
+}
+
+.filters .search-panel {
+	display: flex;
+	align-items: center;
+	justify-content: space-evenly;
+	padding: 0 0 1rem 0;
+}
+
+.filters .search-input {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 50%;
+	background-color: gainsboro;
+	border-radius: 0.5rem;
+}
+
+.filters .search-input i {
+	padding: 0 0 0 0.8rem;
+	cursor: pointer;
+	transition: 0.25s;
+}
+
+.filters .search-input i:hover {
+	transform: scale(1.1);
+}
+
+.filters .search-input input {
+	padding: 0.7rem;
+	border: none;
+	width: 90%;
+	background: transparent;
+}
+
+.filters .search-input input:focus {
+	outline: none;
+}
+
+.filters .buttons {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.filters .buttons button {
+	padding: 0.5rem;
+	font-size: 0.6rem;
+	font-weight: bold;
+	transition: 0.25s;
+	cursor: pointer;
+}
+
+.buttons button span {
+	font-size: 0.6rem;
+	font-weight: bold;
+}
+
+.filters .buttons div button:nth-child(2) {
+	background: rgba(244, 168, 98, 0.393);
+	border-radius: 0.1rem;
+	border: 0.1rem solid rgb(228, 113, 5);
+}
+
+.buttons > button {
+	background-color: transparent;
+	border: 0.1rem solid #000;
+}
+
+.buttons button:hover {
+	transform: scale(1.05);
+}
+
+.filters .buttons button:first-child {
+	background-image: linear-gradient(
+		45deg,
+		hsl(101deg 73% 41%) 0%,
+		hsl(94deg 76% 41%) 11%,
+		hsl(88deg 80% 42%) 22%,
+		hsl(83deg 83% 43%) 33%,
+		hsl(78deg 85% 44%) 44%,
+		hsl(74deg 87% 45%) 56%,
+		hsl(71deg 88% 46%) 67%,
+		hsl(68deg 87% 48%) 78%,
+		hsl(64deg 84% 50%) 89%,
+		hsl(61deg 88% 52%) 100%
+	);
+	border: 0.1rem solid green;
+	border-radius: 0.1rem;
+}
+
+.filters .buttons div button:last-child:hover {
+	background-color: rgb(222, 138, 59);
+}
+
+.filters .buttons button:first-child:hover {
+	animation: button 3s infinite ease-in-out;
+}
+
+@keyframes button {
+	0% {
+		background-image: linear-gradient(
+			45deg,
+			hsl(101deg 73% 41%) 0%,
+			hsl(94deg 76% 41%) 11%,
+			hsl(88deg 80% 42%) 22%,
+			hsl(83deg 83% 43%) 33%,
+			hsl(78deg 85% 44%) 44%,
+			hsl(74deg 87% 45%) 56%,
+			hsl(71deg 88% 46%) 67%,
+			hsl(68deg 87% 48%) 78%,
+			hsl(64deg 84% 50%) 89%,
+			hsl(61deg 88% 52%) 100%
+		);
+	}
+
+	50% {
+		background-image: linear-gradient(
+			45deg,
+			hsl(106deg 74% 55%) 0%,
+			hsl(114deg 70% 58%) 11%,
+			hsl(123deg 68% 58%) 22%,
+			hsl(131deg 68% 56%) 33%,
+			hsl(137deg 68% 54%) 44%,
+			hsl(143deg 67% 52%) 56%,
+			hsl(148deg 67% 50%) 67%,
+			hsl(152deg 70% 48%) 78%,
+			hsl(155deg 72% 47%) 89%,
+			hsl(158deg 71% 47%) 100%
+		);
+	}
+	100% {
+		background-image: linear-gradient(
+			45deg,
+			hsl(101deg 73% 41%) 0%,
+			hsl(94deg 76% 41%) 11%,
+			hsl(88deg 80% 42%) 22%,
+			hsl(83deg 83% 43%) 33%,
+			hsl(78deg 85% 44%) 44%,
+			hsl(74deg 87% 45%) 56%,
+			hsl(71deg 88% 46%) 67%,
+			hsl(68deg 87% 48%) 78%,
+			hsl(64deg 84% 50%) 89%,
+			hsl(61deg 88% 52%) 100%
+		);
+	}
+}
+
+.filters .applying {
+	display: none;
+	justify-content: center;
+	gap: 2rem;
+	margin-top: 1rem;
+}
+
+.filters .applying input,
+select {
+	background-color: rgb(221, 224, 224);
+	border: none;
+	padding: 0.5rem;
+	font-size: 0.8rem;
+	cursor: pointer;
+	border: 0.1rem solid grey;
+	border-radius: 0.2rem;
+	transition: 0.3s;
+}
+
+.filters span {
+	font-size: 0.8rem;
+	cursor: pointer;
+	padding: 0.5rem;
+}
+
+.filters span i {
+	margin-left: 0.3rem;
+}
+
+.filters .applying input,
+.filters .applying select,
+.filters .applying label {
+	padding: 0.4rem;
+	font-size: 0.7rem;
+}
+
+.filters .applying select {
+	padding: 0.42rem;
+}
+
+.filters .applying option {
+	font-size: 0.9rem;
+}
+
+.filters .applying .date > div,
+.filters .applying .selects > div {
+	display: flex;
+	flex-direction: column;
+}
+
+.applying .date > div label,
+.applying .selects > div label {
+	padding: 0.5rem 0;
+}
+
+.applying .selects {
+	display: flex;
+	flex-direction: column;
+}
+
+ul {
+	list-style: none;
+	padding: 0;
+}
+
+li {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	padding: 0.5rem;
+	border-bottom: 1px solid #ccc;
+}
+
+li .li-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+li span {
+	z-index: 100;
+}
+
+li .date {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	font-size: 0.8rem;
+}
+
+li .title {
+	width: 6rem;
+	font-size: 0.8rem;
+}
+
+li .category {
+	width: 3.5rem;
+	color: #2213a8;
+	font-size: 0.8rem;
+}
+
+li .li-container {
+	display: flex;
+	flex-direction: column;
+}
+
+li .li-container .without-tags {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+li .without-tags > div {
+	display: flex;
+	align-items: center;
+}
+
+li .tags {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	flex-wrap: wrap;
+	border-top: 0.05rem dashed grey;
+	padding: 1rem 0;
+	margin-top: 0.5rem;
+}
+
+li .tags span {
+	padding: 0.2rem 0.5rem;
+	border-radius: 0.1rem;
+	background-color: rgb(110, 110, 225);
+	font-size: 0.7rem;
+
+	align-self: flex-end;
+	color: #fff;
+}
+
+li .tags span i {
+	font-size: 0.5rem;
+	padding: 0.1rem 0.2rem;
+	cursor: pointer;
+}
+
+li .li-container .cat-container {
+	display: flex;
+	width: 4rem;
+}
+
+li i {
+	padding: 0.6rem;
+	border-radius: 50%;
+	transition: 0.25s;
+	margin: 0.2rem;
+	cursor: pointer;
+}
+
+li i:hover {
+	background-color: rgba(128, 128, 128, 0.492);
+}
+
+li .tag {
+	color: #991199;
+}
+
+li .tag:hover {
+	background-color: #8718c84d;
+}
+
+li.complete i:hover {
+	background: none;
+}
+
+li button {
+	background: none;
+	border: none;
+	cursor: pointer;
+	border-radius: 50%;
+}
+
+li button i {
+	font-size: 1.2rem;
+	padding: 0.5rem;
+}
+
+li.complete button .unchecked {
+	display: block;
+}
+
+li.complete button .checked {
+	display: none;
+}
+
+li button .unchecked {
+	display: none;
+}
+
+li.complete button i:hover {
+	background-color: rgba(128, 128, 128, 0.492);
+}
+
+li.complete {
+	color: #888;
+	opacity: 0.5;
+}
+
+li .pr-container {
+	width: 5rem;
+	text-align: center;
+}
+
+li .reminder {
+	padding: 0.6rem 0.6rem 0.3rem 0.6rem;
+	color: #dc0e23;
+	font-weight: bold;
+	text-align: center;
+	font-size: 0.8rem;
+}
+
+.priority {
+	padding: 0.3rem 0.5rem;
+	border-radius: 4px;
+	color: #000;
+	font-weight: bold;
+	font-size: 12px;
+	text-transform: uppercase;
+	margin-left: 10px;
+}
+
+.subtask-list li span {
+	font-size: 0.7rem;
+}
+
+.low,
+.LOW {
+	background-color: #28a745;
+}
+
+.medium,
+.MEDIUM {
+	background-color: #ffc107;
+}
+
+.high,
+.HIGH {
+	background-color: #dc3545;
+}
+
+.edit {
+	color: #128d9e;
+}
+
+.edit:hover {
+	background-color: #128e9e46;
+}
+
+.delete {
+	color: #dc0e23;
+}
+
+.delete:hover {
+	background-color: #ffa4b07a;
+}
+
+.add-sub {
+	color: #1bbf4c;
+}
+
+.add-sub:hover {
+	background-color: #1bbf4c39;
+}
+
+.search-results {
+	margin-top: 20px;
+}
+
+.search-results h2 {
+	margin-top: 40px;
+}
+
+.sortingOptions {
+	display: flex;
+	justify-content: space-evenly;
+	gap: 2rem;
+	margin: 2rem 0;
+}
+
+.sortingOptions label {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.sortingOptions input {
+	width: 1rem;
+	height: 1rem;
+}
+
+.subtask {
+	display: flex;
+}
+
+.subtask .title {
+	width: auto;
+}
+
+.subtask span {
+	width: auto;
+	padding: 0.2rem;
+}
+
+.subtask i {
+	padding: 0.5rem 0.5rem 0.5rem 0;
+}
+
+.subtask div i {
+	padding: 0.5rem;
+}
+
+.tasks-container .sort {
+	width: 100%;
+	display: flex;
+	gap: 1rem;
+	cursor: pointer;
+	align-items: center;
+	justify-content: flex-end;
+	margin-top: 2rem;
+}
+
+@media screen and (max-width: 500px) {
+	.add-task input[type='text'],
+	.add-task input[type='date'],
+	.add-task select,
+	.filters input[type='date'],
+	.search-task input[type='text'] {
+		width: 100%;
+		margin-bottom: 10px;
+	}
+
+	.add-task button {
+		width: 100%;
+	}
+}
+
+@media screen and (max-width: 700px) {
+	h1 {
+		font-size: 1.2rem;
+		padding: 3rem;
+	}
+
+	.container {
+		width: 80%;
+	}
+
+	.date-input > div {
+		margin-top: 1rem;
+	}
+
+	.date-input > div label {
+		font-size: 1rem;
+	}
+
+	.search-input,
+	.search-input > input {
+		font-size: 1rem;
+	}
+
+	.filters .search-panel {
+		flex-direction: column;
+	}
+
+	.filters .search-panel .search-input {
+		margin-bottom: 1rem;
+		width: 80%;
+		padding: 0.5rem 0;
+	}
+
+	.filters .search-panel button,
+	.filters .search-panel span {
+		padding: 1rem;
+		font-size: 1rem;
+	}
+
+	.tasks-container .li-container .without-tags {
+		flex-wrap: wrap;
+	}
+
+	.tasks-container .li-container .without-tags > span {
+		width: auto;
+		padding: 0.5rem;
+		font-size: 1rem;
+		border-bottom: 0.1rem dashed #000;
+		margin-bottom: 0.5rem;
+	}
+
+	.tasks-container .li-container .without-tags > div {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+}
+
+@media screen and (max-width: 620px) {
+	.date-input input {
+		width: 18%;
+	}
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Management Application</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+    integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+  <h1>To-Do List Application</h1>
+  <div class="container">
+    <h2>Add Task:</h2>
+    <div class="task-form">
+      <div class='add-input'>
+        <input type="text" id="taskInput" placeholder="Enter task" maxlength='50'>
+        <button onclick="addTask()"><i class="fa-solid fa-plus"></i></button>
+      </div>
+      <div class="date-input">
+        <input type="date" id="dueDate" onclick='dateAutocomplete()'>
+        <input type="time" id="dueTime">
+        <select id="priority">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+        <input type="text" id="categoryInput" placeholder="Category" maxlength='20'>
+        <div>
+          <label for="reminder">Reminder:</label>
+          <input type="checkbox" id="reminder">
+        </div>
+      </div>
+    </div>
+    <div class="filters">
+      <div class="search-panel">
+        <div class="search-input">
+          <i class="fa-solid fa-magnifying-glass" onclick="searchTasks()"></i>
+          <input type="text" id="searchInput" placeholder="Search tasks">
+        </div>
+        <div class="buttons">
+          <!-- <button>Search</button> -->
+          <div>
+            <button onclick="applyFilters()">Apply Filters</button>
+            <button onclick="resetFilters()"><span>Reset Filters</span></button>
+          </div>
+          <button onclick=""><i class="fa-solid fa-truck"></i> Show Expired</button>
+        </div>
+      </div>
+      <span id='drop-down'>Set Filters <i class="fa-solid fa-caret-down"></i></span>
+      <div class="applying">
+        <div class="date">
+          <div class="due">
+            <label for="dueDateFrom">Due Date From:</label>
+            <input type="date" id="dueDateFrom">
+          </div>
+          <div class="due">
+            <label for="dueDateTo">To:</label>
+            <input type="date" id="dueDateTo">
+          </div>
+        </div>
+        <div class="selects">
+          <div>
+            <label for="dueDateFrom">Category:</label>
+            <select id="categoryFilter">
+              <option value="all">All Categories</option>
+              <option value="work">Work</option>
+              <option value="personal">Personal</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="dueDateFrom">Priority:</label>
+            <select id="priorityFilter">
+              <option value="all">All Priorities</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tasks-container">
+      <h2>Tasks:</h2>
+      <div class='sort'>
+        <i class="fa-solid fa-arrow-down-a-z" onclick='sortTasks("alph", "asc")'></i>
+        <i class="fa-solid fa-arrow-up-z-a" onclick='sortTasks("alph", "desc")'></i>
+        <i class="fa-solid fa-arrow-down-wide-short" onclick='sortTasks("priority", "asc")'></i>
+        <i class="fa-solid fa-arrow-up-short-wide" onclick='sortTasks("priority", "desc")'></i>
+      </div>
+      <ul id="taskList" ondrop="drop(event)" ondragover="allowDrop(event)"></ul>
+    </div>
+    <div class="search-results">
+      <h2>Search Results:</h2>
+      <ul id="searchResults" ondrop="drop(event)" ondragover="allowDrop(event)"></ul>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
